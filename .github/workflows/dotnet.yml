@@ -12,16 +12,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Download Everest stripped lib
-      uses: robinraju/release-downloader@v1.4
-      with:
-        repository: EverestAPI/Everest
-        latest: true
-        fileName: lib-stripped.zip
-
-    - name: Extract lib-stripped.zip
-      run: unzip lib-stripped.zip
-
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v4
       with:
@@ -30,8 +20,6 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --configuration Release --no-restore
-      env:
-        CelestePrefix: ${{ github.workspace }}/lib-stripped
 
     - name: Unzip again (jank)
       run: |
