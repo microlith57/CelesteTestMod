@@ -1,4 +1,5 @@
 ﻿using System;
+using Monocle;
 
 namespace Celeste.Mod.TestMod;
 
@@ -26,10 +27,23 @@ public class TestModModule : EverestModule {
     }
 
     public override void Load() {
-        // TODO: apply any hooks that should always be active
+        Everest.Events.Atlas.OnGetCustomFallback += (atlas, id) => {
+            Logger.Info(nameof(TestMod), $"missing texture {id}");
+            return null;
+        };
+
+        Everest.Events.Level.OnEnd += (Level level, Scene nextScene, ref bool reloadPortraits, ref bool disassociate) => {
+            Logger.Info(nameof(TestMod), $"scene ending; {reloadPortraits}, {disassociate}");
+            return;
+        };
+
+        Everest.Events.Player.OnPauseInGBJ += (player) => {
+            Logger.Info(nameof(TestMod), "suppressing softlock prevention");
+            return true;
+        };
     }
 
     public override void Unload() {
-        // TODO: unapply any hooks applied in Load()
+        // ehh can't be bothered
     }
 }
