@@ -1,4 +1,7 @@
 ﻿using System;
+using Celeste.Mod.Entities;
+using Microsoft.Xna.Framework;
+using Monocle;
 
 namespace Celeste.Mod.TestMod;
 
@@ -31,5 +34,20 @@ public class TestModModule : EverestModule {
 
     public override void Unload() {
         // TODO: unapply any hooks applied in Load()
+    }
+}
+
+[CustomEntity("TestMod/AwakeOrderMeasurer")]
+public class AwakeOrderMeasurer : Entity {
+    public string Message;
+
+    public AwakeOrderMeasurer(EntityData data, Vector2 offset) {
+        AwakePriority = data.Int("awakePriority", 0);
+        Message = data.Attr("message", AwakePriority.ToString());
+    }
+
+    public override void Awake(Scene scene) {
+        base.Awake(scene);
+        Logger.Info(nameof(TestMod), Message);
     }
 }
