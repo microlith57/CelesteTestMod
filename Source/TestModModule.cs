@@ -40,10 +40,13 @@ public class TestModModule : EverestModule {
 [CustomEntity("TestMod/AwakeOrderMeasurer")]
 public class AwakeOrderMeasurer : Entity {
     public string Message;
+    public int Priority;
+
+    public override int AwakePriority => Priority;
 
     public AwakeOrderMeasurer(EntityData data, Vector2 offset) {
-        AwakePriority = data.Int("awakePriority", 0);
-        Message = data.Attr("message", AwakePriority.ToString());
+        Priority = data.Int("awakePriority", 0);
+        Message = data.Attr("message", Priority.ToString());
     }
 
     public override void Awake(Scene scene) {
